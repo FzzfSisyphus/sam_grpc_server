@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package sam;
+
+service SAMService {
+  rpc GetSegmentation (Request) returns (stream Response);
+}
+
+message ImageRequest {
+  bytes image_data = 1;
+}
+
+message Mask {
+  bytes mask_array = 1;  // numpy 数组的二进制数据
+  float area = 2;
+  BoundingBox bbox = 3;
+  float predicted_iou = 4;
+  float stability_score = 5;
+}
+
+message BoundingBox {
+  int32 x = 1;
+  int32 y = 2;
+  int32 width = 3;
+  int32 height = 4;
+}
+
+message MaskResponse {
+  repeated Mask masks = 1;
+  int32 image_height = 2;
+  int32 image_width = 3;
+  int32 total_masks = 4;
+}
